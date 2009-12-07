@@ -4,9 +4,11 @@
 == DESCRIPTION:
 
 * Winch, when you need to have some more control over the data that ActiveResource loads.
+
 == FEATURES/PROBLEMS:
 
 * There seems to be problems if the class inheriting ActiveResource::Base has Mixins with constructors.
+
 == SYNOPSIS:
 
  #In the example below a cat will default to clean fur on it's first leg, and dirty fur on all the other legs unless 
@@ -15,7 +17,7 @@
  class Cat < ActiveResource::Base
    define_type do
      must_have 'tail'
-     must_have 'legs', :default => [{'paws' => 'groomed', 'fur' => 'clean'}, {}], 
+     must_have 'legs', :default => [{'paws' => 'groomed', 'fur' => 'clean'}], 
                        :type => 'collection' # can be collection, node, or text
    end
  end
@@ -26,12 +28,15 @@
      must_have 'fur', :type => 'text', :default => 'dirty'
    end
  end
+
 == REQUIREMENTS:
 
 * NONE
+
 == INSTALL:
 
 * sudo gem install winch
+
 == LICENSE:
 
 winch: when you need to have some more control over the data that ActiveResource loads.
@@ -50,6 +55,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
 == GNU GENERAL PUBLIC LICENSE:
 
 		    GNU GENERAL PUBLIC LICENSE
