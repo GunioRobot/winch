@@ -13,18 +13,18 @@
  #it is explicitly defined in the xml
 
  class Cat < ActiveResource::Base
-  define_type do
-   must_have 'tail'
-   must_have 'legs', :default => [{'paws' => 'groomed', 'fur' => 'clean'}, {}], 
-                     :type => 'collection' # can be collection, node, or text
-  end
+   define_type do
+     must_have 'tail'
+     must_have 'legs', :default => [{'paws' => 'groomed', 'fur' => 'clean'}, {}], 
+                       :type => 'collection' # can be collection, node, or text
+   end
  end
 
  class Cat::Leg < ActiveResource::Base
-  define_type do
-   must_have 'paws', :type => 'text'
-   must_have 'fur', :type => 'text', :default => 'dirty'
-  end
+   define_type do
+     must_have 'paws', :type => 'text'
+     must_have 'fur', :type => 'text', :default => 'dirty'
+   end
  end
 == REQUIREMENTS:
 
