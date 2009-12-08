@@ -1,11 +1,20 @@
 require File.dirname(__FILE__) + '/spec_helper.rb'
 
-# Time to add your specs!
-# http://rspec.info/
-describe "Place your specs here" do
-  
-  it "find this spec in spec directory" do
-    # violated "Be sure to write your specs"
+class Bat < ActiveResource::Base
+end
+
+class Cat < ActiveResource::Base
+  self.site = ''
+  must_have 'fur'
+end
+
+describe Winch do
+  it "should work in the default situation" do
+    Bat.new({}).should be_well_typed
   end
   
+  it "should work with a basic winch case" do
+    Cat.new({:fur => 'black'}).should be_well_typed
+    Cat.new({:eyes => 'black'}).should_not be_well_typed
+  end
 end
