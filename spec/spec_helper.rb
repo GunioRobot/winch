@@ -1,3 +1,5 @@
+require 'ruby-debug'
+
 begin
   require 'spec'
 rescue LoadError
