@@ -8,7 +8,7 @@ class Cat < ActiveResource::Base
   self.site = ''
 
   must_have 'name', :default => 'Oreo'
-	must_have 'legs', :default => [{'paws' => 'sharp', 'fur' => 'clean'},
+  must_have 'legs', :default => [{'paws' => 'sharp', 'fur' => 'clean'},
 	                               {'paws' => 'sharp', 'fur' => 'clean'},
 	                               {'paws' => 'sharp', 'fur' => 'clean'},
 	                               {'paws' => 'sharp', 'fur' => 'clean'}]
