@@ -4,23 +4,27 @@ module Winch::Base
       #Either :default, or :faux can be anything including false and '', just not nil
       raise "%s can have either a default or a faux value, but not both." % name unless options.values_at(:default, :faux).select { |v| !v.nil? }.length == 1
 
-      self.must_haves = (self.must_haves || []).push(options.merge(:name => name))
+      self.must_haves = (self.must_haves || {}).merge(name => options.merge(:name => name))
     end
   end
   
   module InstanceMethods
     def initialize_winch(attributes)
-      (self.must_haves || []).each do |clause| 
-        name = clause[:name]
+      (self.must_haves || {}).each do |name, clause|
+        set_default_for_attribute(attributes, clause)
+      end
+    end
 
-        next unless attributes[name].nil?
+    def set_default_for_attribute(attributes, clause)
+      name = clause[:name]
 
-        if clause[:default].nil?
-          @broken_attributes = (@broken_attributes || []).push(name)
-          attributes[name] = clause[:faux]
-        else
-          attributes[name] = clause[:default]
-        end
+      return unless attributes[name].nil?
+
+      if clause[:default].nil?
+        @broken_attributes = (@broken_attributes || []).push(name)
+        attributes[name] = clause[:faux]
+      else
+        attributes[name] = clause[:default]
       end
     end
 
@@ -51,7 +55,7 @@ module Winch::Base
   
   def self.included(klass)
     klass.class_eval do
-      class_inheritable_array :must_haves, :instance_writer => false
+      class_inheritable_hash :must_haves, :instance_writer => false
       attr_reader :well_typed, :broken_attributes
       alias_method :well_typed?, :well_typed
       
