@@ -2,7 +2,7 @@ module Winch::Base
   module ClassMethods
     def must_have(name, options={})
       #Either :default, or :faux can be anything including false and '', just not nil
-      raise "%s can have either a default or a faux value, but not both." % name unless options.values_at(:default, :faux).one? { |v| !v.nil? }
+      raise "%s can have either a default or a faux value, but not both." % name unless options.values_at(:default, :faux).select { |v| !v.nil? }.length == 1
 
       self.must_haves = (self.must_haves || []).push(options.merge(:name => name))
     end
@@ -23,20 +23,28 @@ module Winch::Base
         end
       end
     end
-      
-    def preform_type_check
-      @broken_attributes = (@broken_attributes || []) + attributes.keys.collect do |name|
-        if attributes[name].kind_of?(ActiveResource::Base) && !attributes[name].well_typed?
-          attributes[name].broken_attributes.collect { |a| "%s.%s" % [name, a] }
-        elsif attributes[name].kind_of?(Array)
-          attributes[name].to_enum(:each_with_index).collect do |node, index|
-            node.broken_attributes.collect { |a| "%s[%s].%s" % [name, index, a] } unless node.well_typed?
-          end
-        else
-          nil
-        end
-      end.flatten.compact
 
+    def find_broken_in_active_resource(name, node)
+      @broken_attributes += node.broken_attributes.collect { |a| "%s.%s" % [name, a] } unless node.well_typed?
+    end
+
+    def find_broken_in_collection(name, node)
+      node.each_with_index do |child_node, index|
+        find_broken_in_node("%s[%s]" % [name, index], child_node)
+      end
+    end
+
+    def find_broken_in_node(name, node)
+      if node.kind_of?(ActiveResource::Base)
+        find_broken_in_active_resource(name, node)
+      elsif node.kind_of?(Array)
+        find_broken_in_collection(name, node)
+      end
+    end
+
+    def preform_type_check
+      @broken_attributes ||= []
+      attributes.keys.each { |name| find_broken_in_node(name, attributes[name]) }
       @well_typed = @broken_attributes.blank?
     end
   end

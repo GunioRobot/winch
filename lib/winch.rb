@@ -5,9 +5,8 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Winch
-  VERSION = '0.0.2'
-  
-  autoload :Base, 'winch/base'
+  VERSION = '0.0.2' unless defined?(Winch::VERSION)
 end
 
+require 'winch/base'
 require 'active_resource_boot/base'

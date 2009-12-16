@@ -1,11 +1,14 @@
 History.txt
 Manifest.txt
 PostInstall.txt
-README.rdoc
 Rakefile
+README.rdoc
+lib/active_resource_boot/base.rb
+lib/winch/base.rb
 lib/winch.rb
 script/console
 script/destroy
 script/generate
-test/test_helper.rb
-test/test_winch.rb
+spec/spec.opts
+spec/spec_helper.rb
+spec/winch_spec.rb
