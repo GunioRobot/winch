@@ -5,7 +5,7 @@ $:.unshift(File.dirname(__FILE__)) unless
   $:.include?(File.dirname(__FILE__)) || $:.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Winch
-  VERSION = '0.0.4' unless defined?(Winch::VERSION)
+  VERSION = '0.0.5' unless defined?(Winch::VERSION)
 end
 
 require 'winch/base'
