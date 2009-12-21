@@ -15,6 +15,19 @@ module Winch::Base
       end
     end
 
+    def preform_type_check
+      @broken_attributes ||= []
+      attributes.keys.each { |name| find_broken_in_node(name, attributes[name]) }
+      @well_typed = @broken_attributes.blank?
+
+      return if @well_typed
+      return unless self.class.parent == Object
+      
+      raise Winch::TypeError.new(:object => self) if Winch.config.raise_on_broken_attributes
+    end
+
+    private
+
     def set_default_for_attribute(attributes, clause)
       name = clause[:name]
 
@@ -45,22 +58,31 @@ module Winch::Base
         find_broken_in_collection(name, node)
       end
     end
-
-    def preform_type_check
-      @broken_attributes ||= []
-      attributes.keys.each { |name| find_broken_in_node(name, attributes[name]) }
-      @well_typed = @broken_attributes.blank?
-    end
   end
-  
+
   def self.included(klass)
     klass.class_eval do
       class_inheritable_hash :must_haves, :instance_writer => false
+
       attr_reader :well_typed, :broken_attributes
       alias_method :well_typed?, :well_typed
       
       extend ClassMethods
       include InstanceMethods
     end
+  end
+end
+
+module Winch
+  def self.config
+    @@config ||= OpenStruct.new(:raise_on_broken_attributes => false)
+  end
+end
+
+class Winch::TypeError < Exception
+  attr_accessor :object
+
+  def initialize(options={})
+    self.object = options[:object]
   end
 end
