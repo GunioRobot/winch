@@ -7,7 +7,7 @@ module Winch::Base
       self.must_haves = (self.must_haves || {}).merge(name => options.merge(:name => name))
     end
   end
-  
+
   module InstanceMethods
     def initialize_winch(attributes)
       (self.must_haves || {}).each do |name, clause|
@@ -22,7 +22,7 @@ module Winch::Base
 
       return if @well_typed
       return unless self.class.parent == Object
-      
+
       raise Winch::TypeError.new(:object => self) if Winch.config.raise_on_broken_attributes
     end
 
@@ -66,7 +66,7 @@ module Winch::Base
 
       attr_reader :well_typed, :broken_attributes
       alias_method :well_typed?, :well_typed
-      
+
       extend ClassMethods
       include InstanceMethods
     end

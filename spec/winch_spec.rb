@@ -39,14 +39,14 @@ describe Winch do
   it "should work in the default situation" do
     Bat.new({}).should be_well_typed
   end
-  
+
   it "should work with a basic winch case" do
     Cat::Leg.new({'paws' => 'sharp'}).tap do |cl|
       cl.paws.should eql('sharp')
       cl.fur.should eql('dirty')
       cl.should be_well_typed
     end
-    
+
     Cat::Leg.new({'fur' => 'black'}).tap do |cl|
       cl.paws.should eql('mysterious')
       cl.fur.should eql('black')
@@ -54,7 +54,7 @@ describe Winch do
       cl.broken_attributes.should eql(['paws'])
     end
   end
-  
+
   it "should work with a nested winch case" do
     Goat.new({}).tap do |g|
       g.legs.each_with_index do |l, i|
@@ -68,7 +68,7 @@ describe Winch do
           l.should be_well_typed
         end
       end
-      
+
       g.name.should eql('billy')
       g.should_not be_well_typed
       g.broken_attributes.should eql(['legs[1].hoof', 'legs[2].hoof', 'legs[3].hoof'])

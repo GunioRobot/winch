@@ -11,7 +11,7 @@
 
 == SYNOPSIS:
 
- #In the example below a cat will default to clean fur on it's first leg, and dirty fur on all the other legs unless 
+ #In the example below a cat will default to clean fur on it's first leg, and dirty fur on all the other legs unless
  #it is explicitly defined in the xml
 
  class Cat < ActiveResource::Base
